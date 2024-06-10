@@ -1,0 +1,9 @@
+/staking-app-frontend/.git
+
+/staking-app/.git
+
+/staking-app/build
+/staking-app/src/lib/*
+/staking-app/.chromia
+/staking-app/.chroma
+/blockchain
