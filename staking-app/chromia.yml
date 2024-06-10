@@ -1,0 +1,26 @@
+blockchains:
+  staking-app:
+    module: main
+    moduleArgs:
+      staking_app:
+          dapp_account_signer: x"023D41B457042ABF108E9B196F0F1BFCF97C9A8A536D8484F29009CDBD3E042315"
+      lib.ft4.accounts:
+        rate_limit:
+          points_at_account_creation: 2
+    test:
+      modules:
+        - staking_app_test
+libs:
+  ft4:
+    registry: https://bitbucket.org/chromawallet/ft3-lib
+    tagOrBranch: v0.6.0r
+    path: rell/src/lib/ft4
+    rid: x"5A3613FE75047A110E381029C6A542E31A9085F57F13D0D6C5EC460BA2252823"
+    insecure: false
+compile:
+  rellVersion: 0.13.5
+database:
+  schema: schema_rell_marketplace
+test:
+  modules:
+    - staking_app.test

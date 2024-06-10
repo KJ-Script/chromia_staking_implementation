@@ -1,0 +1,4 @@
+// Test module using the scope of the parent module.
+@test module;
+
+import main.*;

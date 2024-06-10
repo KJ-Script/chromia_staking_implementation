@@ -1,0 +1,6 @@
+query get_stake_details(){
+    val account = auth.authenticate(is_strict = false);
+    val stake = stake @ { .owner == account};
+    return stake;
+}
+

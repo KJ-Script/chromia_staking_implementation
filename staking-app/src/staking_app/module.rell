@@ -1,0 +1,29 @@
+module;
+
+import lib.ft4.assets. { asset, Unsafe, balance };
+import lib.ft4.accounts.{ account, _create_account_with_auth, create_account_with_auth, single_sig_auth_descriptor };
+import lib.ft4.auth;
+
+@extend(auth.auth_handler)
+function () = auth.add_auth_handler(
+  flags = ["T"]
+);
+
+object dapp_meta {
+    asset = Unsafe.register_asset("Stamp", "STP", 6, chain_context.blockchain_rid, "https://images.unsplash.com/photo-1584382179644-9c11f8e6ee0c?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    account = _create_account_with_auth(single_sig_auth_descriptor(chain_context.args.dapp_account_signer, set(["A", "T"])), safe = false);
+}           
+
+struct module_args {
+    dapp_account_signer: pubkey;
+}
+
+query get_all_accounts()
+{
+    return account @* {} ($.to_struct());
+}
+
+query get_all_balances()
+{
+    return balance @* {} ($.account.to_struct(), $.to_struct());
+}

@@ -1,0 +1,67 @@
+operation stake_user_token(amount: integer) {
+    val account = auth.authenticate(is_strict = false);
+    stake_token(account, amount);
+    Unsafe.transfer(account, dapp_meta.account, dapp_meta.asset, amount);   
+}
+
+operation request_unstake(id: integer) {
+    val account = auth.authenticate(is_strict = false);
+    val (stake, owner) = stake @ { .rowid == rowid(id) } ( $, .owner );
+    require(owner == account, "User must be owner of Stake");
+    update stake @ { .rowid == rowid(id) } ( unstake_requested = true, unstake_request_timestamp = op_context.last_block_time + 1209600); // 2 weeks in integer format (2 * 7 * 24 * 60 * 60 )
+}
+
+operation process_unstake(id: integer) {
+    val account = auth.authenticate(is_strict = false);
+    val (stake, owner, stake_time, requested, unstaked_time, amount) = stake @ { .rowid == rowid(id) } ( $, .owner, .stake_timestamp, .unstake_requested, .unstake_request_timestamp, .amount );
+    require(owner == account, "User must be owner of Stake");
+
+    if (requested and (unstaked_time < op_context.last_block_time)) {
+        // Calculate the number of seconds in a year
+        val seconds_in_a_year = (365 * 24 * 60 * 60);
+    
+    // Calculate the number of seconds staked
+        val seconds_staked = unstaked_time - stake_time;
+    
+    // Calculate the yield accrued for the staked period 10%
+        val annual_yield_decimal = 0.1;
+        val yield_accrued = amount * annual_yield_decimal * (seconds_staked / seconds_in_a_year);
+        Unsafe.transfer(dapp_meta.account, account, dapp_meta.asset, integer(amount + yield_accrued));  
+        delete stake @ { .rowid == rowid(id) };
+    }
+}
+
+operation claim_yield(id: integer) {
+    val account = auth.authenticate(is_strict = false);
+    val (stake, owner, stake_time, amount) = stake @ { .rowid == rowid(id) } ( $, .owner, .stake_timestamp, .amount );
+    require(owner == account, "User must be owner of Stake");
+
+    // Calculate the number of seconds in a year
+    val seconds_in_a_year = (365 * 24 * 60 * 60);
+    
+    // Calculate the number of seconds staked
+    val seconds_staked = op_context.last_block_time - stake_time;
+    
+    // Calculate the yield accrued for the staked period 10%
+    val annual_yield_decimal = 0.1;
+    val yield_accrued = amount * annual_yield_decimal * (seconds_staked / seconds_in_a_year);
+    update stake @ { .rowid == rowid(id) } ( stake_timestamp = op_context.last_block_time);
+    Unsafe.transfer(dapp_meta.account, account, dapp_meta.asset, integer(yield_accrued));  
+}
+
+// operation list_nft(id: integer, price: big_integer) {
+//     val account = auth.authenticate(is_strict = false);
+//     val (nft, owner) = nft @ { .rowid == rowid(id) } ( $, .owner );
+//     require(owner == account, "User must be owner of NFT");
+//     create listed_nft ( nft, price, owner );
+// }
+
+// operation buy_nft(id: integer) {
+//     val account = auth.authenticate(is_strict = false);
+//     val (nft, owner, price) = listed_nft @ {
+//         .nft.rowid == rowid(id)
+//     } ( .nft, .listed_by, .price );
+//     Unsafe.transfer(account, owner, dapp_meta.asset, price);
+//     delete listed_nft @ { .nft.rowid == rowid(id) };
+//     nft.owner = account;
+// }

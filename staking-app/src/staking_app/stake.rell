@@ -1,0 +1,17 @@
+entity stake {
+    key id: byte_array = op_context.transaction.tx_rid;
+    owner: account;
+    index owner;
+    mutable stake_timestamp: timestamp = op_context.last_block_time;
+    mutable unstake_request_timestamp: timestamp = op_context.last_block_time;
+    amount: big_integer;
+    mutable unstake_requested: boolean = false;
+}
+
+
+// Mint a new card with random attributes
+function stake_token(account, amount: integer ) {
+    // Create a new NFT for the specified account
+    val stake = create stake(account, amount);
+}
+

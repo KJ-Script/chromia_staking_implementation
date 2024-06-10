@@ -1,0 +1,46 @@
+@test module;
+
+import staking_app.*;
+// import lib.ft4.assets.external.*;
+// import lib.ft4.accounts.external.*;
+// import lib.ft4.test.utils. { ft_auth_operation_for };
+
+// function get_account(pubkey) {
+//     val response = get_accounts_by_signer(pubkey, 1, null);
+//     return list<(id: byte_array)>.from_gtv_pretty(response.data.to_gtv())[0].id;
+// }
+
+// function test_list_and_buy_nft() {
+//     val alice = rell.test.keypairs.alice;
+//     val trudy = rell.test.keypairs.trudy;
+//     val economy_account = rell.test.keypairs.frank;
+//     rell.test.tx()
+//         .op(create_user(alice.pub)).sign(alice)
+//         .op(create_user(trudy.pub)).sign(trudy)
+//         .run();
+//     rell.test.tx()
+//         .op(ft_auth_operation_for(alice.pub))
+//         .op(buy_mystery_card()).sign(alice)
+//         .run();
+    
+//     val nft = get_all_nfts()[0];
+//     rell.test.tx()  
+//         .op(ft_auth_operation_for(alice.pub))
+//         .op(list_nft(nft.nft_id.to_integer(), 20))
+//         .sign(alice)
+//         .run();
+//     rell.test.tx()
+//         .op(ft_auth_operation_for(trudy.pub))
+//         .op(buy_nft(nft.nft_id.to_integer()))
+//         .sign(trudy)
+//         .run();
+
+//     val alice_acc = get_account(alice.pub);
+//     val trudy_acc = get_account(trudy.pub);
+//     val nft_after_trade = get_all_nfts()[0];
+
+//     assert_equals(get_asset_balance(alice_acc, dapp_meta.asset.id)!!.amount, 920);
+//     assert_equals(get_asset_balance(trudy_acc, dapp_meta.asset.id)!!.amount, 980);
+//     assert_equals(nft_after_trade.owner_id, trudy_acc);
+    
+// }
