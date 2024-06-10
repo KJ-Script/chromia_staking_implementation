@@ -60,13 +60,8 @@ This project implements a staking protocol using Chromia, Rell, and the FT4 libr
    - The interface will display the status of your unstake request.
 
 ### Additional Information
-- **Contact:** For any questions or issues, please contact me at natimok55@gmail.com.
+- **Contact:** For any questions or issues, please contact me at ketiyohannes@gmail.com.
 
-
-### Author Information
-- **Name:** Natan Mekebib
-- **Email:** natimok55@gmail.com
-- **Phone Number:** +251946650560
 
 
 
